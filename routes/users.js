@@ -19,4 +19,12 @@ router.get('/data/:id', function(req, res, next) {
 });
 
 
+
+router.post('/randi', function(req, res, next) {
+  // res.send('Ayush thssssssse randi ');
+  const number=req.body.number
+  console.log(number);
+  res.send(500);
+});
+
 module.exports = router;
