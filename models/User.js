@@ -1,6 +1,6 @@
 var mongoose=require('mongoose');
 var UserSchema=mongoose.Schema({
-    EmployeeName:{
+    employeeName:{
         type:String,
         required:true
     },
@@ -12,9 +12,14 @@ var UserSchema=mongoose.Schema({
         type:String,
         required:true
     },
-    email:{
-        typr:String,
+    phoneNumber:{
+        type:Number,
         required:true
+    },
+    email:{
+        type:String,
+        required:true,
+        unique:true
     },
     password:{
         type:String,
@@ -66,4 +71,6 @@ var UserSchema=mongoose.Schema({
         type:Array
     }
 
-})
+});
+
+module.exports=mongoose.model('User',UserSchema);

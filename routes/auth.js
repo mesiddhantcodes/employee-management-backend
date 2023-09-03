@@ -1,28 +1,23 @@
 var express = require('express');
 var router = express.Router();
+var User = require('../models/User');
+router.post('/login', async (req, res) => {
+  var { email, password } = req.body;
+  let ifUserFounded = await User.findOne({ email: email });
+  if (!ifUserFounded) {
+    return res.send("User not found");
+  }
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+  if (ifUserFounded.password != password) {
+    return res.send("Password is incorrect");
+  } else {
+    return res.send("Login successfully");
+  }
 });
 
-// router.get('/randi', function(req, res, next) {
-//   res.send('Ayush the randi ');
-// });
 
-// router.get('/data/:id', function(req, res, next) {
-//   if(req.params.id<5)
-//   {
-//     res.send("the numbe is  less than 5");
-//   }
-//   return res.send(req.params.id);
-// });
-// router.post('/randi', function(req, res, next) {
-//   // res.send('Ayush thssssssse randi ');
-//   const number=req.body.number
-//   console.log(number);
-//   res.send(500);
-// });
+
+
 
 
 
