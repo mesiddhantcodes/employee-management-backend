@@ -6,7 +6,7 @@ var UserSchema=mongoose.Schema({
     },
     dob:{
         type:Date,
-        required:false
+        required:true
     },
     userName:{
         type:String,
@@ -52,23 +52,25 @@ var UserSchema=mongoose.Schema({
     },
     address:{
         type:String,
-        required:true
+        required:false
     },
     aadharNumber:{
         type:String,
         // here we store a image by using bucket or using multer(store the file at folder and make a id of name of using) 
-        required:true
+        required:false
     },
     panCard:{
         type:String,
-        required:true
+        required:false
     },
     photo:{
         type:String,
-        required:true
+        required:false
     },
     projects:{
-        type:Array
+        type:[mongoose.Schema.Types.ObjectId],
+        ref:"Project",
+        required:false
     }
 
 });
