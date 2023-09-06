@@ -51,12 +51,18 @@ router.get("/getProjectById/:projectId", async (req, res) => {
 
 router.get("/getProjectByUserId/:userId", async (req, res) => {
     let { userId } = req.params;
-    let project = await Project.find({ projectMembers: userId, isDeleted: false }); //try catch add krna hai
-    if (!project) {
+    let project; //try catch add krna hai
+    // if (!project) {
+    //     return res.status(404).send("Projectssssssss not found");
+    // }
+    // return res.status(200).send(project);
+    try {
+        project = await Project.find({ projectMembers: userId, isDeleted: false });
+        return res.status(200).send(project);
+    }
+    catch (err) {
         return res.status(404).send("Project not found");
     }
-    return res.status(200).send(project);
-
 
 });
 
