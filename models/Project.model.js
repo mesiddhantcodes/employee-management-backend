@@ -1,61 +1,50 @@
-var mongoose = require('mongoose');
+var mongoose = require("mongoose");
 var ProjectSchema = new mongoose.Schema({
+  projectName: {
+    type: String,
+    required: true,
+  },
 
+  projectDescription: {
+    type: String,
+    required: true,
+  },
 
-    projectName: {
-        type: String,
-        required: true
-    },
+  createdAt: {
+    type: Date,
+    default: new Date(),
+  },
 
-    projectDescription: {
-        type: String,
-        required: true
-    },
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
 
-    createdAt: {
-        type: Date,
-        default: new Date()
-    },
+  isDeleted: {
+    type: Boolean,
+    default: false,
+  },
 
-    createdBy: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        required: true
-    },
+  isCompleted: {
+    type: Boolean,
+    default: false,
+  },
 
-    isDeleted: {
-        type: Boolean,
-        default: false
-    },
+  projectMembers: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "User",
+  },
 
-    isCompleted: {
-        type: Boolean,
-        default: false
-    },
+  updatedAt: {
+    type: Date,
+    default: new Date(),
+  },
 
-    tasks: {
-        type: [mongoose.Schema.Types.ObjectId],
-        ref: "Task",
-    },
-
-    projectMembers: {
-        type: [mongoose.Schema.Types.ObjectId],
-        ref: "User",
-    },
-
-    updatedAt: {
-        type: Date,
-        default: new Date()
-    },
-
-    updatedBy: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-    },
-
-
-
-
+  updatedBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
 });
 
-module.exports = mongoose.model('Project', ProjectSchema);
+module.exports = mongoose.model("Project", ProjectSchema);

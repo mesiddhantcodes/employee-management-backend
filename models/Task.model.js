@@ -1,71 +1,68 @@
-var mongoose = require('mongoose');
+var mongoose = require("mongoose");
 
 var TaskSchema = new mongoose.Schema({
+  taskName: {
+    type: String,
+    required: true,
+  },
+  projectId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Project",
+    required: true,
+  },
 
-    taskName: {
-        type: String,
-        required: true
-    },
-    projectId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Project",
-    },
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
 
-    createdBy: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-    },
+  createdAt: {
+    type: Date,
+    default: new Date(),
+  },
 
-    createdAt: {
-        type: Date,
-        default: new Date()
-    },
+  isDeleted: {
+    type: Boolean,
+    default: false,
+  },
 
-    isDeleted: {
-        type: Boolean,
-        default: false
-    },
+  status: {
+    type: String,
+    default: "pending",
+    enum: ["pending", "completed", "inprogress", "intesting", "isdisabled"],
+  },
 
-    status: {
-        type: String,
-        default: "pending",
-        enum: ["pending", "completed", "inprogress", "intesting", "isdisabled"]
-    },
+  assignedTo: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "User",
+  },
 
-    assignedTo: {
-        type: [mongoose.Schema.Types.ObjectId],
-        ref: "User",
-    },
+  updatedAt: {
+    type: Date,
+    default: new Date(),
+  },
 
-    updatedAt: {
-        type: Date,
-        default: new Date()
-    },
+  updatedBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
 
-    updatedBy: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-    },
+  taskDescription: {
+    type: String,
+    required: true,
+  },
 
+  taskDeadline: {
+    type: Date,
+    default: new Date(),
+  },
 
-    taskDescription: {
-        type: String,
-        required: true
-    },
+  taskPriority: {
+    type: String,
+    default: "low",
+    enum: ["low", "medium", "high"],
+  },
+});
 
-
-    taskDeadline: {
-        type: Date,
-        required: true,
-        default: new Date()
-    },
-
-    taskPriority: {
-        type: String,
-        default: "low",
-        enum: ["low", "medium", "high"]
-    },
-
-
-
-})
+module.exports = mongoose.model("Task", TaskSchema);
