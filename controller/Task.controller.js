@@ -5,7 +5,6 @@ const UserModel = require("../models/User.model");
 const TaskController = {
   create: async (req, res) => {
     const { taskName, taskDescription, createdBy, projectId } = req.body;
-
     let checkIfUserExists;
     let checkIfProjectExists;
     try {
@@ -33,7 +32,10 @@ const TaskController = {
     const { taskId } = req.params;
     let checkIfTaskExists;
     try {
-      checkIfTaskExists = await TaskModel.findOne({ _id: taskId });
+      checkIfTaskExists = await TaskModel.findOne({
+        _id: taskId,
+        isDeleted: false,
+      });
     } catch (err) {
       return res.status(400).send("Task does not exists");
     }
@@ -46,14 +48,20 @@ const TaskController = {
     const { projectId } = req.params;
     let checkIfProjectExists;
     try {
-      checkIfProjectExists = await ProjectModel.findOne({ _id: projectId });
+      checkIfProjectExists = await ProjectModel.findOne({
+        _id: projectId,
+        isDeleted: false,
+      });
     } catch (err) {
       return res.status(400).send("Project does not exists");
     }
     if (!checkIfProjectExists) {
       return res.status(400).send("Project does not exists");
     }
-    let tasks = await TaskModel.find({ projectId: projectId });
+    let tasks = await TaskModel.find({
+      projectId: projectId,
+      isDeleted: false,
+    });
     tasks = tasks.map((task) => task._id);
     return res.status(200).send(tasks);
   },
@@ -63,7 +71,10 @@ const TaskController = {
       req.body;
     let checkIfTaskExists;
     try {
-      checkIfTaskExists = await TaskModel.findOne({ _id: taskId });
+      checkIfTaskExists = await TaskModel.findOne({
+        _id: taskId,
+        isDeleted: false,
+      });
     } catch (err) {
       return res.status(400).send("Task does not exists");
     }
@@ -85,6 +96,25 @@ const TaskController = {
       return res.status(500).send("Task not updated something went wrong");
     }
     return res.status(200).send("Task updated successfully");
+  },
+  deleteTaskById: async (req, res) => {
+    var { taskId } = req.params;
+    let checkIfTaskExists;
+    checkIfTaskExists = await TaskModel.findOne({
+      _id: taskId,
+      isDeleted: false,
+    });
+    try {
+      checkIfTaskExists = await TaskModel.findOne({ _id: taskId });
+    } catch (err) {
+      return res.status(400).send("Task does not exists");
+    }
+    checkIfTaskExists.isDeleted = true;
+    let updateTask = await checkIfTaskExists.save();
+    if (!updateTask) {
+      return res.status(500).send("Task not deleted something went wrong");
+    }
+    return res.status(200).send("Task deleted successfully");
   },
 };
 

@@ -27,4 +27,10 @@ router.put(
   TaskController.updateTaskById
 );
 
+router.delete(
+  "/deleteTaskById/:taskId",
+  AuthenticationMiddleware.authenticate,
+  TaskController.deleteTaskById
+);
+
 module.exports = router;

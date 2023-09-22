@@ -76,6 +76,37 @@ const ProjectController = {
     }
     return res.status(200).send("Project assigned successfully");
   },
+  updateProjectById: async (req, res) => {
+    var { projectId } = req.params;
+    var { projectName, projectDescription, isCompleted, projectMembers } =
+      req.body;
+    let checkIfProjectExists;
+    try {
+      checkIfProjectExists = await ProjectModel.findOne({ _id: projectId });
+    } catch (err) {
+      return res.status(404).send("Project does not exists");
+    }
+    if (projectMembers) {
+      if (projectMembers.length > 0) {
+        let combinedProjectMember = [
+          ...projectMembers,
+          ...checkIfProjectExists.projectMembers,
+        ];
+        let uniqueProjectMember = new Set(combinedProjectMember);
+        uniqueProjectMember = Array.from(uniqueProjectMember);
+        checkIfProjectExists.projectMembers = uniqueProjectMember;
+      }
+    }
+    if (projectName) checkIfProjectExists.projectName = projectName;
+    if (projectDescription)
+      checkIfProjectExists.projectDescription = projectDescription;
+    if (isCompleted) checkIfProjectExists.isCompleted = isCompleted;
+    let ifProjectSaved = await checkIfProjectExists.save();
+    if (!ifProjectSaved) {
+      return res.status(500).send("Something went wrong");
+    }
+    return res.status(200).send("Project updated successfully");
+  },
 };
 
 module.exports = ProjectController;
