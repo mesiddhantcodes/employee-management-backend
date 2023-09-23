@@ -3,8 +3,9 @@ const UserModel = require("../models/User.model");
 
 const ProjectController = {
   create: async (req, res) => {
-    var { projectName, projectDescription, createdBy } = req.body;
+    var { projectName, projectDescription } = req.body;
     let checkIfUserExists;
+    var createdBy = req.user.id;
     try {
       checkIfUserExists = await UserModel.findOne({ _id: createdBy });
     } catch (err) {
@@ -42,8 +43,8 @@ const ProjectController = {
     }
     return res.status(200).send(project);
   },
-  getProjectByUserId: async (req, res) => {
-    let { userId } = req.params;
+  getProjectByUser: async (req, res) => {
+    let userId = req.user.id;
     let project;
     try {
       project = await ProjectModel.find({
@@ -101,6 +102,8 @@ const ProjectController = {
     if (projectDescription)
       checkIfProjectExists.projectDescription = projectDescription;
     if (isCompleted) checkIfProjectExists.isCompleted = isCompleted;
+    checkIfProjectExists.updatedAt = Date.now();
+    checkIfProjectExists.updatedBy = req.user.id;
     let ifProjectSaved = await checkIfProjectExists.save();
     if (!ifProjectSaved) {
       return res.status(500).send("Something went wrong");

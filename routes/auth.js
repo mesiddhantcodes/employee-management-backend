@@ -4,4 +4,5 @@ const AuthenticationController = require("../controller/Authentication.controlle
 
 router.post("/login", AuthenticationController.loginUser);
 router.post("/register", AuthenticationController.registerUser);
+router.get("/verify/:token", AuthenticationController.verifyEmail);
 module.exports = router;

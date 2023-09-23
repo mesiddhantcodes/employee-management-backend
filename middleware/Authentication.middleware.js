@@ -28,6 +28,15 @@ const AuthenticationMiddleware = {
     );
     return token;
   },
+  verifyEmailToken: async (token) => {
+    try {
+      let decodedToken = decodeURIComponent(token);
+      let decoded = jwt.verify(decodedToken, JWT_SECRET);
+      return decoded;
+    } catch (error) {
+      return false;
+    }
+  },
 };
 
 module.exports = AuthenticationMiddleware;

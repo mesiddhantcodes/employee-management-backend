@@ -19,14 +19,20 @@ router.get(
   ProjectController.getProjectById
 );
 router.get(
-  "/getProjectByUserId/:userId",
+  "/getProjectByUser",
   AuthenticationMiddleware.authenticate,
-  ProjectController.getProjectByUserId
+  ProjectController.getProjectByUser
 );
 router.post(
   "/assignProjectToUser",
   AuthenticationMiddleware.authenticate,
   ProjectController.assignProjectToUser
+);
+
+router.put(
+  "/updateProject/:projectId",
+  AuthenticationMiddleware.authenticate,
+  ProjectController.updateProjectById
 );
 
 module.exports = router;
